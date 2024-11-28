@@ -1,0 +1,36 @@
+{%extends 'base.html'%}
+{%block title%} 
+{{object.title}}
+{%endblock%}
+
+{%block content%}
+<script src="https://cdn.jsdelivr.net/npm/marked@4.0.10/marked.min.js"></script>
+{% comment %} detailed view give object{% endcomment %}
+<h1> {{object.title }} </h1>
+<small> By: {{object.author.first_name}} {{object.author.last_name}}</small> <br />
+
+{% comment %} horizontal rule {% endcomment %}
+<hr>
+<br />
+  <div id="article-blog-post"></div>
+
+{% comment %} Markdown formatter {% endcomment %}
+<script>
+   // Ensure the script is loaded before using marked
+   document.addEventListener('DOMContentLoaded', function() {
+    console.log(marked)
+       // Fetch the raw Markdown content from the Django template
+       const markdownContent = `{{ object.body|escapejs }}`;
+
+       // Convert Markdown to HTML using marked.js
+       const htmlContent = marked.parse(markdownContent);
+
+       // Set the converted HTML into the article blog post div
+       document.getElementById('article-blog-post').innerHTML = htmlContent;
+   });
+</script>
+
+<br />
+<br />
+<a href="{% url 'home' %}" class="btn btn-outline-dark">Back</a>
+{% endblock %}
