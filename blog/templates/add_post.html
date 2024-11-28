@@ -2,8 +2,8 @@
 {%block content%}
     <h1>Add Blog Post</h1>
     {% comment %} Django form system is used! {% endcomment %}
-    <form method="POST">
+    <form method="POST" class="form-group">
         {% csrf_token %}
         {{form.as_p}}
-        <button>Post</button>
+        <button class="btn btn btn-outline-dark">Post</button>
 {%endblock%}
