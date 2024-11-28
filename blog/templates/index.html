@@ -1,16 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-</head>
+{%block title%}
+    Geez Writes
+{%endblock%}
 
-<body>
-    <h1>
-        Hello, World!
-    </h1>
-</body>
+{% block content %}
 
-</html>
+<ul>
+    {% for post in object_list %}
+    <li>
+        <a class="icon-link icon-link-hover" href="{% url 'article-detail' post.pk %}"><b>{{post.title}}</b></a> -by {{post.author.first_name}} {{post.author.last_name}}
+        <br />
+        {{post.body | slice:":50"}}...
+    </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
