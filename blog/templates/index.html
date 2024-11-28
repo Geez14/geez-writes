@@ -7,7 +7,7 @@
 {% block content %}
 
 <ul>
-    {% for post in object_list %}
+    {% for post in object_list%}
     <li>
         <a class="icon-link icon-link-hover" href="{% url 'blog-detail' post.pk %}"><b>{{post.title}}</b></a> -by {{post.author.first_name}} {{post.author.last_name}}
         <br />
