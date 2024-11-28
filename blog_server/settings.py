@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "blog"
+    "blog",
 ]
 
 MIDDLEWARE = [
@@ -81,6 +81,17 @@ DATABASES = {
     }
 }
 
+# oracle database
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.oracle",
+#         "NAME": "XEPDB1",
+#         "USER": "HR",
+#         "PASSWORD": "asdf",
+#         "HOST": "localhost",
+#         "PORT": "1521",
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
