@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{%block content%}
+    <h1>Add Blog Post</h1>
+    {% comment %} Django form system is used! {% endcomment %}
+    <form method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button>Post</button>
+{%endblock%}
