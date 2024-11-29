@@ -1,36 +1,111 @@
-{%extends 'base.html'%}
-{%block title%} 
-{{object.title}}
-{%endblock%}
+{% extends 'base.html' %}
+{% block title %}
+{{ object.title }}
+{% endblock %}
 
-{%block content%}
-<script src="https://cdn.jsdelivr.net/npm/marked@4.0.10/marked.min.js"></script>
-{% comment %} detailed view give object{% endcomment %}
-<h1> {{object.title }} </h1>
-<small> By: {{object.author.first_name}} {{object.author.last_name}}</small> <br />
+{% block content %}
+<style>
+   /* Custom styling for code blocks */
+   pre[class*="language-"] {
+      border-radius: 8px;
+      padding: 1em;
+      margin: 0.5em 0;
+      overflow: auto;
+      background: #f4f4f4;
+      position: relative;
+   }
 
-{% comment %} horizontal rule {% endcomment %}
-<hr>
-<br />
-  <div id="article-blog-post"></div>
+   code[class*="language-"] {
+      border-radius: 4px;
+      padding: 0.2em 0.4em;
+   }
 
-{% comment %} Markdown formatter {% endcomment %}
+   /* Copy button styling */
+   .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #e0e0e0;
+      border: none;
+      border-radius: 4px;
+      padding: 5px 10px;
+      cursor: pointer;
+      font-size: 0.8em;
+      transition: background-color 0.3s ease;
+   }
+
+   .copy-btn:hover {
+      background-color: #d0d0d0;
+   }
+
+   .copy-btn:active {
+      background-color: #c0c0c0;
+   }
+</style>
+<!-- Include Prism CSS for syntax highlighting -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/themes/prism.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/prism.js" defer></script>
+
+<!-- Your page content -->
+<h1> {{ object.title }} </h1>
+<small> By: {{ object.author.first_name }} {{ object.author.last_name }}</small> <br />
+
+<hr><br />
+<div id="article-blog-post"></div>
+
+<!-- Include marked.js with integrity protection-->
+<script src="https://cdn.jsdelivr.net/npm/marked@4.0.10/marked.min.js" integrity="sha384-<hash>"
+   crossorigin="anonymous"></script>
+
 <script>
-   // Ensure the script is loaded before using marked
-   document.addEventListener('DOMContentLoaded', function() {
-    console.log(marked)
-       // Fetch the raw Markdown content from the Django template
-       const markdownContent = `{{ object.body|escapejs }}`;
+   document.addEventListener('DOMContentLoaded', function () {
+      // Fetch the raw Markdown content from the Django template
+      const markdownContent = `{{ object.body|escapejs }}`;
 
-       // Convert Markdown to HTML using marked.js
-       const htmlContent = marked.parse(markdownContent);
+            marked.setOptions({
+            mangle: false,
+            headerIds: false
+      });
+     
+      // Sanitize the content first, then parse Markdown
+      const htmlContent = marked.parse(markdownContent);
 
-       // Set the converted HTML into the article blog post div
-       document.getElementById('article-blog-post').innerHTML = htmlContent;
+      // Set the converted HTML into the article blog post div
+      document.getElementById('article-blog-post').innerHTML = htmlContent;
+
+      Prism.highlightAll();
+
+
+      // Add copy to clipboard functionality to all code blocks
+      document.querySelectorAll('pre[class*="language-"]').forEach(pre => {
+         // Create copy button
+         const copyBtn = document.createElement('button');
+         copyBtn.textContent = 'Copy';
+         copyBtn.classList.add('copy-btn');
+
+         // Add click event listener
+         copyBtn.addEventListener('click', () => {
+            // Get the code inside the pre tag
+            const code = pre.querySelector('code').textContent;
+
+            // Copy to clipboard
+            navigator.clipboard.writeText(code).then(() => {
+               // Temporary text change to provide feedback
+               copyBtn.textContent = 'Copied!';
+               setTimeout(() => {
+                  copyBtn.textContent = 'Copy';
+               }, 2000);
+            }).catch(err => {
+               console.error('Failed to copy: ', err);
+            });
+         });
+         
+         // Append copy button to pre element
+         pre.appendChild(copyBtn);
+      });
    });
 </script>
 
-<br />
-<br />
+<br /><br />
 <a href="{% url 'home' %}" class="btn btn-outline-dark">Back</a>
 {% endblock %}

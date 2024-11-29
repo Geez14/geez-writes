@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-wlzk1zg^91rsn(27_vyvn5js^xr7cz42vod($v0wtwl$842y)k"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "blog"
+    "blog",
 ]
 
 MIDDLEWARE = [
@@ -74,10 +74,30 @@ WSGI_APPLICATION = "blog_server.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
+
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.oracle",
+        "NAME": "xe",
+        "USER": "c##djangodb",
+        "PASSWORD": "asdf",
+        "HOST": "localhost",
+        "PORT": "1521",
+    }
+}
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.oracle",
+        "NAME": "localhost:1521/xepdb1",
+        "USER": "djangodb",
+        "PASSWORD": "asdf",
     }
 }
 
